@@ -1,0 +1,25 @@
+{
+  "name": "ambient-weather-api",
+  "version": "0.0.1",
+  "description": "Ambient Weather API",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src -d lib",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "weather"
+  ],
+  "author": "@owise1",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "dotenv": "^4.0.0"
+  },
+  "dependencies": {
+    "ramda": "^0.25.0",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2"
+  }
+}
