@@ -1,7 +1,7 @@
 import request from 'request-promise'
 import { map, pipe, toPairs, join } from 'ramda'
 
-const AW_API_URL = 'https://ambient-weather-api.herokuapp.com/v1/devices/'
+const AW_API_URL = 'https://api.ambientweather.net/v1/devices/'
 
 module.exports = class AmbientWeatherApi {
   constructor (opts) {

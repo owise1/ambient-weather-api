@@ -22,8 +22,10 @@ const api = new AmbientWeatherApi({
 ## Methods
 
 * `userDevices()` - list the user's devices
-* `deviceData(macAdress, options)` - fetch data for a specific device
+    * `@return` - Promise containing array of device objects
+* `deviceData(macAddress, options)` - fetch data for a specific device
     * `macAddress` - (required)
     * `options` - limit, endDate see [docs](https://ambientweather.docs.apiary.io/)
+    * `@return` - Promise containing array of data objects
 
 
