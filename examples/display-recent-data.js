@@ -18,8 +18,7 @@ api.userDevices()
     .then((deviceData) => {
       console.log('The 5 most recent temperature reports for ' + device.info.name + ' - ' + device.info.location + ':')
       deviceData.forEach((data) => {
-        const d = new Date(data.dateutc)
-        console.log(d + ' - ' + data.tempf + '°F')
+        console.log(data.date + ' - ' + data.tempf + '°F')
       })
       console.log('---')
     })
