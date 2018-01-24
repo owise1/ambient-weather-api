@@ -1,5 +1,5 @@
 import request from 'request-promise'
-import { map, pipe, toPairs, join } from 'ramda'
+import { equals, filter, not, map, pipe, toPairs, join } from 'ramda'
 
 const AW_API_URL = 'https://api.ambientweather.net/v1/devices/'
 
@@ -14,12 +14,31 @@ module.exports = class AmbientWeatherApi {
     }
     this.apiKey = apiKey
     this.applicationKey = applicationKey
+    this.requestQueue = []
   }
 
   _apiRequest (url) {
-    return request({
-      url,
-      json: true
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        request({
+          url,
+          json: true
+        })
+        .then((res, body) => {
+          this.requestQueue = filter(pipe(equals(url), not), this.requestQueue)
+          resolve(res)
+        })
+        .catch((err) => {
+          // handle rate limiting
+          if (err.statusCode === 429) {
+            this.requestQueue.push(url)
+            this._apiRequest(url).then(resolve)
+
+          } else {
+            reject(err)
+          }
+        })
+      }, this.requestQueue.length * 1100)
     })
   }
 
