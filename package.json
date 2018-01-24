@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "Ambient Weather API",
   "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/owise1/ambient-weather-api"
+  },
   "scripts": {
     "build": "babel src -d lib",
     "test": "echo \"Error: no test specified\" && exit 1"
