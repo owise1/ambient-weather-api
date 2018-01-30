@@ -24,6 +24,7 @@
   "dependencies": {
     "ramda": "^0.25.0",
     "request": "^2.83.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "socket.io-client": "^2.0.4"
   }
 }

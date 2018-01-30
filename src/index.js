@@ -1,9 +1,12 @@
 import request from 'request-promise'
 import { equals, filter, not, map, pipe, toPairs, join } from 'ramda'
+import io from 'socket.io-client'
+const EventEmitter = require('events')
 
-const AW_API_URL = 'https://api.ambientweather.net/v1/devices/'
+const API_URL = 'https://api.ambientweather.net/'
+const AW_API_URL = API_URL + 'v1/devices/'
 
-module.exports = class AmbientWeatherApi {
+module.exports = class AmbientWeatherApi extends EventEmitter {
   constructor (opts) {
     const { apiKey, applicationKey } = opts
     if (!apiKey) {
@@ -12,6 +15,7 @@ module.exports = class AmbientWeatherApi {
     if (!applicationKey) {
       throw new Error('You need an applicationKey')
     }
+    super()
     this.apiKey = apiKey
     this.applicationKey = applicationKey
     this.requestQueue = []
@@ -63,5 +67,14 @@ module.exports = class AmbientWeatherApi {
       )(opts)
     }
     return this._apiRequest(url)
+  }
+
+  connect () {
+    this.socket = io(API_URL)
+    this.socket.on('connect', (what) => {
+      console.log('connected');
+      console.log(what);
+    })
+    
   }
 }
