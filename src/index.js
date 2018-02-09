@@ -70,21 +70,24 @@ module.exports = class AmbientWeatherApi extends EventEmitter {
   }
 
   connect () {
+    if (this.socket) {
+      return
+    }
     this.socket = io(API_URL + '?api=1&applicationKey=' + this.applicationKey, {
       transports: ['websocket']
     })
-    this.socket.on('connect', (what) => {
-      console.log('connected');
-      this.socket.emit('subscribe', { apiKeys: [this.apiKey] })
+    ;['error', 'subscribed', 'connect', 'data'].forEach((key) => {
+      this.socket.on(key, (data) => {
+        this.emit(key, data)
+      })
     })
-    this.socket.on('error', (err) => {
-      console.log('error');
-      console.log(err);
-
-    })
-    this.socket.on('subscribed', (res) => {
-      console.log('subscribed');
-      console.log(res);
-    })
+  }
+  subscribe (apiKeyOrApiKeys) {
+    const apiKeys = Array.isArray(apiKeyOrApiKeys) ? apiKeyOrApiKeys : [apiKeyOrApiKeys]
+    this.socket.emit('subscribe', { apiKeys })
+  }
+  unsubscribe (apiKeyOrApiKeys) {
+    const apiKeys = Array.isArray(apiKeyOrApiKeys) ? apiKeyOrApiKeys : [apiKeyOrApiKeys]
+    this.socket.emit('unsubscribe', { apiKeys })
   }
 }
