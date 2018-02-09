@@ -3,7 +3,7 @@ import { equals, filter, not, map, pipe, toPairs, join } from 'ramda'
 import io from 'socket.io-client'
 const EventEmitter = require('events')
 
-const API_URL = 'https://api.ambientweather.net/'
+const API_URL = 'http://api.ambientweather.net/'
 const AW_API_URL = API_URL + 'v1/devices/'
 
 module.exports = class AmbientWeatherApi extends EventEmitter {
@@ -70,11 +70,21 @@ module.exports = class AmbientWeatherApi extends EventEmitter {
   }
 
   connect () {
-    this.socket = io(API_URL)
+    this.socket = io(API_URL + '?api=1&applicationKey=' + this.applicationKey, {
+      transports: ['websocket']
+    })
     this.socket.on('connect', (what) => {
       console.log('connected');
-      console.log(what);
+      this.socket.emit('subscribe', { apiKeys: [this.apiKey] })
     })
-    
+    this.socket.on('error', (err) => {
+      console.log('error');
+      console.log(err);
+
+    })
+    this.socket.on('subscribed', (res) => {
+      console.log('subscribed');
+      console.log(res);
+    })
   }
 }
