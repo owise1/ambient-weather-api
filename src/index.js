@@ -1,5 +1,5 @@
 import request from 'request-promise'
-import { equals, filter, not, map, pipe, toPairs, join } from 'ramda'
+import { propEq, find, equals, filter, not, map, pipe, toPairs, join } from 'ramda'
 import io from 'socket.io-client'
 const EventEmitter = require('events')
 
@@ -19,6 +19,7 @@ module.exports = class AmbientWeatherApi extends EventEmitter {
     this.apiKey = apiKey
     this.applicationKey = applicationKey
     this.requestQueue = []
+    this.subscribedDevices = []
   }
 
   _apiRequest (url) {
@@ -76,11 +77,24 @@ module.exports = class AmbientWeatherApi extends EventEmitter {
     this.socket = io(API_URL + '?api=1&applicationKey=' + this.applicationKey, {
       transports: ['websocket']
     })
-    ;['error', 'subscribed', 'connect', 'data'].forEach((key) => {
+    ;['error', 'connect'].forEach((key) => {
       this.socket.on(key, (data) => {
         this.emit(key, data)
       })
     })
+    this.socket.on('subscribed', (data) => {
+      this.subscribedDevices = data.devices || []
+      this.emit('subscribed', data)
+    })
+    this.socket.on('data', (data) => {
+      // find the device this data is for using the macAddress
+      data.device = find(propEq('macAddress', data.macAddress), this.subscribedDevices)
+      this.emit('data', data)
+    })
+  }
+  disconnect () {
+    this.socket.discconect()
+    delete this.socket
   }
   subscribe (apiKeyOrApiKeys) {
     const apiKeys = Array.isArray(apiKeyOrApiKeys) ? apiKeyOrApiKeys : [apiKeyOrApiKeys]
