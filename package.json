@@ -1,6 +1,6 @@
 {
   "name": "ambient-weather-api",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Ambient Weather API",
   "main": "lib/index.js",
   "repository": {
