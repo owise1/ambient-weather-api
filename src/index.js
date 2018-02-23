@@ -93,7 +93,7 @@ module.exports = class AmbientWeatherApi extends EventEmitter {
     })
   }
   disconnect () {
-    this.socket.discconect()
+    this.socket.disconect()
     delete this.socket
   }
   subscribe (apiKeyOrApiKeys) {
