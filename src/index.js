@@ -3,7 +3,7 @@ import { propEq, find, equals, filter, not, map, pipe, toPairs, join } from 'ram
 import io from 'socket.io-client'
 const EventEmitter = require('events')
 
-const API_URL = 'http://api.ambientweather.net/'
+const API_URL = 'https://api.ambientweather.net/'
 const AW_API_URL = API_URL + 'v1/devices/'
 
 module.exports = class AmbientWeatherApi extends EventEmitter {
