@@ -3,6 +3,7 @@
 A simple wrapper for the *forthcoming* AmbientWeather.net API
 
 * [API Docs](https://ambientweather.docs.apiary.io/)
+* [API Wiki](https://github.com/ambient-weather/api-docs/wiki)
 * check out the [examples](examples/)
 
 ## Installation 
